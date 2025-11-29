@@ -32,7 +32,8 @@ test('import attributes', async () => {
 
   pureCJSCache()
   const { uuid: uuid3, requireESM: requireESM3 } = await import(
-    './fixtures/mod.js',
+    // absolute URL
+    new URL('fixtures/mod.js', import.meta.url).href,
     {
       with: { cache: 'no' },
     }
@@ -55,8 +56,12 @@ test('no-cache protocol', async () => {
 
   // @ts-expect-error
   const mod = JSON.stringify(await import('no-cache://./fixtures/mod.js'))
-  // @ts-expect-error
-  const mod2 = JSON.stringify(await import('no-cache://./fixtures/mod.js'))
+  const mod2 = JSON.stringify(
+    await import(
+      // absolute URL
+      `no-cache://${new URL('fixtures/mod.js', import.meta.url).href}`
+    ),
+  )
   assert.notEqual(mod, mod2)
   deregister()
 
