@@ -12,6 +12,10 @@ declare global {
 }
 
 export function init(): () => void {
+  if (!module.registerHooks) {
+    throw new Error('import-without-cache requires Node.js v20.19.0 or higher.')
+  }
+
   const hooks = module.registerHooks({
     resolve(specifier, context, nextResolve) {
       const fromNoCache =
