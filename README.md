@@ -12,6 +12,20 @@ Import ES modules without cache.
 npm i import-without-cache
 ```
 
+## Usage
+
+```ts
+import { init } from 'import-without-cache'
+
+const deregister = init()
+
+const mod = await import('some-module', { with: { cache: 'no' } })
+// or
+const mod2 = await import(`no-cache://some-module`)
+
+deregister() // Optional: deregister the hooks when no longer needed
+```
+
 ## Known Limitations
 
 - Support Node.js since v22.15.0, and doesn't support Deno or Bun.
