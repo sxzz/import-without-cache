@@ -11,10 +11,14 @@ declare global {
   }
 }
 
+let deregister: (() => void) | undefined
+
 export function init(): () => void {
   if (!module.registerHooks) {
     throw new Error('import-without-cache requires Node.js v20.19.0 or higher.')
   }
+
+  if (deregister) return deregister
 
   const hooks = module.registerHooks({
     resolve(specifier, context, nextResolve) {
@@ -49,7 +53,11 @@ export function init(): () => void {
       return nextLoad(url, context)
     },
   })
-  return hooks.deregister.bind(hooks)
+
+  return (deregister = () => {
+    hooks.deregister()
+    deregister = undefined
+  })
 }
 
 function cleanupImportAttributes(context: LoadHookContext): void {

@@ -46,10 +46,7 @@ test('import attributes', async () => {
   deregister()
 
   await assert.rejects(
-    () =>
-      import('./fixtures/mod.js', {
-        with: { cache: 'no' },
-      }),
+    () => import('./fixtures/mod.js', { with: { cache: 'no' } }),
   )
 })
 
@@ -65,4 +62,15 @@ test('no-cache protocol', async () => {
 
   // @ts-expect-error
   await assert.rejects(() => import('no-cache://./fixtures/mod.js'))
+})
+
+test('register twice', () => {
+  const deregister1 = init()
+  const deregister2 = init()
+  assert.equal(deregister1, deregister2)
+  deregister1()
+
+  const deregister3 = init()
+  assert.notEqual(deregister1, deregister3)
+  deregister3()
 })
