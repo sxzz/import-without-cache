@@ -15,30 +15,54 @@ function clearCJSCache() {
 
 test('import attributes', async () => {
   const deregister = init()
-  const { uuid, url, cjs, requireESM } = await import('./fixtures/mod.js', {
-    with: { cache: 'no' },
-  })
-  assert.match(url, /\?no-cache=[0-9a-f-]{36}$/)
-
+  const { uuid, url, cjs, requireESM, importCJS, dynamicImportCJS } =
+    await import('./fixtures/mod.js', {
+      with: { cache: 'no' },
+    })
   const {
     uuid: uuid2,
     cjs: cjs2,
     requireESM: requireESM2,
+    importCJS: importCJS2,
+    dynamicImportCJS: dynamicImportCJS2,
   } = await import('./fixtures/mod.js', {
     with: { cache: 'no' },
   })
-  assert.notEqual(uuid, uuid2)
-  assert.equal(cjs, cjs2)
-
   clearCJSCache()
-  const { uuid: uuid3, requireESM: requireESM3 } = await import(
+  const {
+    uuid: uuid3,
+    cjs: cjs3,
+    requireESM: requireESM3,
+    importCJS: importCJS3,
+    dynamicImportCJS: dynamicImportCJS3,
+  } = await import(
     // absolute URL
     new URL('fixtures/mod.js', import.meta.url).href,
     {
       with: { cache: 'no' },
     }
   )
+
+  assert.match(url, /\?no-cache=[0-9a-f-]{36}$/)
+
+  // import + ESM
+  assert.notEqual(uuid, uuid2)
   assert.notEqual(uuid2, uuid3)
+
+  // require + CJS
+  assert.equal(cjs, cjs2)
+  // require + CJS + clearCJSCache
+  assert.notEqual(cjs2, cjs3)
+
+  // import + CJS
+  assert.equal(importCJS, importCJS2)
+  // import + CJS + clearCJSCache
+  assert.notEqual(importCJS2, importCJS3)
+
+  // dynamic import + CJS
+  assert.equal(dynamicImportCJS, dynamicImportCJS2)
+  // dynamic import + CJS + clearCJSCache
+  assert.notEqual(dynamicImportCJS2, dynamicImportCJS3)
 
   // known limitation: require cache can't be fully cleared
   assert.equal(requireESM, requireESM2)

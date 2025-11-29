@@ -6,6 +6,11 @@
 
 Import ES modules without cache.
 
+## Features
+
+- Import ES modules without cache
+- All dependencies are also imported without cache
+
 ## Install
 
 ```bash
