@@ -1,0 +1,56 @@
+{
+  "name": "import-without-cache",
+  "version": "0.0.0",
+  "packageManager": "pnpm@10.22.0",
+  "description": "Import modules without cache.",
+  "type": "module",
+  "license": "MIT",
+  "homepage": "https://github.com/sxzz/import-without-cache#readme",
+  "bugs": {
+    "url": "https://github.com/sxzz/import-without-cache/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sxzz/import-without-cache.git"
+  },
+  "author": "Kevin Deng <sxzz@sxzz.moe>",
+  "funding": "https://github.com/sponsors/sxzz",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "lint": "eslint --cache .",
+    "lint:fix": "pnpm run lint --fix",
+    "build": "tsdown",
+    "dev": "tsdown --watch",
+    "test": "node --test tests/index.test.ts",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --cache --write .",
+    "release": "bumpp",
+    "prepublishOnly": "pnpm run build"
+  },
+  "devDependencies": {
+    "@sxzz/eslint-config": "^7.2.10",
+    "@sxzz/prettier-config": "^2.2.4",
+    "@types/node": "^24.10.1",
+    "bumpp": "^10.3.1",
+    "eslint": "^9.39.1",
+    "prettier": "^3.6.2",
+    "tsdown": "^0.16.4",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=20.19.0"
+  },
+  "prettier": "@sxzz/prettier-config"
+}
