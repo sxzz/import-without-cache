@@ -1,7 +1,7 @@
 {
   "name": "import-without-cache",
   "version": "0.0.0",
-  "packageManager": "pnpm@10.22.0",
+  "packageManager": "pnpm@10.24.0",
   "description": "Import ES modules without cache.",
   "type": "module",
   "license": "MIT",
@@ -40,13 +40,13 @@
     "prepublishOnly": "pnpm run build"
   },
   "devDependencies": {
-    "@sxzz/eslint-config": "^7.2.10",
-    "@sxzz/prettier-config": "^2.2.4",
+    "@sxzz/eslint-config": "^7.4.0",
+    "@sxzz/prettier-config": "^2.2.6",
     "@types/node": "^24.10.1",
-    "bumpp": "^10.3.1",
+    "bumpp": "^10.3.2",
     "eslint": "^9.39.1",
-    "prettier": "^3.6.2",
-    "tsdown": "^0.16.4",
+    "prettier": "^3.7.3",
+    "tsdown": "^0.17.0-beta.3",
     "typescript": "^5.9.3"
   },
   "engines": {
