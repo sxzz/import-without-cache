@@ -1,6 +1,6 @@
 {
   "name": "import-without-cache",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "packageManager": "pnpm@10.24.0",
   "description": "Import ES modules without cache.",
   "type": "module",
