@@ -1,4 +1,4 @@
-import module, { isBuiltin, type LoadHookContext } from 'node:module'
+import module, { type LoadHookContext } from 'node:module'
 
 const namespace = 'no-cache://'
 const namespaceLength = namespace.length
@@ -19,10 +19,9 @@ export function init(): () => void {
   const hooks = module.registerHooks({
     resolve(specifier, context, nextResolve) {
       const fromNoCache =
-        !isBuiltin(specifier) &&
+        !module.isBuiltin(specifier) &&
         (specifier.startsWith(namespace) ||
           context.importAttributes?.cache === 'no' ||
-          context.parentURL?.startsWith(namespace) ||
           (context.parentURL && noCacheModules.has(context.parentURL)))
 
       if (!fromNoCache) {
