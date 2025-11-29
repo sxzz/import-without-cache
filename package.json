@@ -2,7 +2,7 @@
   "name": "import-without-cache",
   "version": "0.0.0",
   "packageManager": "pnpm@10.22.0",
-  "description": "Import modules without cache.",
+  "description": "Import ES modules without cache.",
   "type": "module",
   "license": "MIT",
   "homepage": "https://github.com/sxzz/import-without-cache#readme",
@@ -18,11 +18,11 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "exports": {
-    ".": "./dist/index.js",
+    ".": "./dist/index.mjs",
     "./package.json": "./package.json"
   },
   "publishConfig": {
@@ -33,7 +33,7 @@
     "lint:fix": "pnpm run lint --fix",
     "build": "tsdown",
     "dev": "tsdown --watch",
-    "test": "node --test tests/index.test.ts",
+    "test": "node --test tests/index.test.js",
     "typecheck": "tsc --noEmit",
     "format": "prettier --cache --write .",
     "release": "bumpp",
