@@ -15,7 +15,11 @@ npm i import-without-cache
 ## Usage
 
 ```ts
-import { init } from 'import-without-cache'
+import { init, isSupported } from 'import-without-cache'
+
+if (!isSupported) {
+  throw new Error('import-without-cache is not supported in this environment.')
+}
 
 const deregister = init()
 
