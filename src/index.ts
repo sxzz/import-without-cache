@@ -11,10 +11,11 @@ declare global {
   }
 }
 
-let deregister: (() => void) | undefined
+export const isSupported: boolean = !!module.registerHooks
 
+let deregister: (() => void) | undefined
 export function init(): () => void {
-  if (!module.registerHooks) {
+  if (!isSupported) {
     throw new Error('import-without-cache requires Node.js v20.19.0 or higher.')
   }
 
