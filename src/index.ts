@@ -3,8 +3,6 @@ import module, { type LoadHookContext } from 'node:module'
 const namespace = 'no-cache://'
 const namespaceLength = namespace.length
 
-const noCacheModules = new Set<string>()
-
 declare global {
   interface ImportAttributes {
     cache?: 'no'
@@ -23,11 +21,12 @@ export function init(): () => void {
 
   const hooks = module.registerHooks({
     resolve(specifier, context, nextResolve) {
+      const parentUUID = getParentUUID(context.parentURL)
       const fromNoCache =
         !module.isBuiltin(specifier) &&
         (specifier.startsWith(namespace) ||
           context.importAttributes?.cache === 'no' ||
-          (context.parentURL && noCacheModules.has(context.parentURL)))
+          parentUUID)
 
       if (!fromNoCache) {
         return nextResolve(specifier, context)
@@ -38,19 +37,12 @@ export function init(): () => void {
       }
 
       const resolved = nextResolve(specifier, context)
-      resolved.url = `${resolved.url}?${crypto.randomUUID()}`
-      noCacheModules.add(resolved.url)
-
+      resolved.url = appendUUID(resolved.url, parentUUID || crypto.randomUUID())
       return resolved
     },
 
     load(url, context, nextLoad) {
       cleanupImportAttributes(context)
-
-      if (url.startsWith(namespace)) {
-        url = url.slice(namespaceLength, -37 /* length of ? + uuid */)
-      }
-
       return nextLoad(url, context)
     },
   })
@@ -59,6 +51,17 @@ export function init(): () => void {
     hooks.deregister()
     deregister = undefined
   })
+}
+
+function getParentUUID(parentURL: string | undefined) {
+  if (!parentURL) return
+  return new URL(parentURL).searchParams.get('no-cache') ?? undefined
+}
+
+function appendUUID(url: string, uuid: string): string {
+  const parsed = new URL(url)
+  parsed.searchParams.set('no-cache', uuid)
+  return parsed.toString()
 }
 
 function cleanupImportAttributes(context: LoadHookContext): void {

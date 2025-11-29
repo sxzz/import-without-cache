@@ -18,7 +18,7 @@ test('import attributes', async () => {
   const { uuid, url, cjs, requireESM } = await import('./fixtures/mod.js', {
     with: { cache: 'no' },
   })
-  assert.match(url, /\?[0-9a-f-]{36}$/)
+  assert.match(url, /\?no-cache=[0-9a-f-]{36}$/)
 
   const {
     uuid: uuid2,
