@@ -7,7 +7,7 @@ import { init } from '../dist/index.mjs'
 
 const require = createRequire(import.meta.url)
 
-function pureCJSCache() {
+function clearCJSCache() {
   for (const key of Object.keys(require.cache)) {
     delete require.cache[key]
   }
@@ -30,7 +30,7 @@ test('import attributes', async () => {
   assert.notEqual(uuid, uuid2)
   assert.equal(cjs, cjs2)
 
-  pureCJSCache()
+  clearCJSCache()
   const { uuid: uuid3, requireESM: requireESM3 } = await import(
     // absolute URL
     new URL('fixtures/mod.js', import.meta.url).href,
