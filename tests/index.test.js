@@ -2,7 +2,7 @@
 
 import assert from 'node:assert'
 import { test } from 'node:test'
-import { clearCJSCache, init } from '../dist/index.mjs'
+import { clearRequireCache, init } from '../dist/index.mjs'
 
 test('import attributes', async () => {
   const deregister = init()
@@ -19,7 +19,7 @@ test('import attributes', async () => {
   } = await import('./fixtures/mod.js', {
     with: { cache: 'no' },
   })
-  clearCJSCache()
+  clearRequireCache()
   const {
     uuid: uuid3,
     cjs: cjs3,
@@ -42,17 +42,17 @@ test('import attributes', async () => {
 
   // require + CJS
   assert.equal(cjs, cjs2)
-  // require + CJS + clearCJSCache
+  // require + CJS + clearRequireCache
   assert.notEqual(cjs2, cjs3)
 
   // import + CJS
   assert.equal(importCJS, importCJS2)
-  // import + CJS + clearCJSCache
+  // import + CJS + clearRequireCache
   assert.notEqual(importCJS2, importCJS3)
 
   // dynamic import + CJS
   assert.equal(dynamicImportCJS, dynamicImportCJS2)
-  // dynamic import + CJS + clearCJSCache
+  // dynamic import + CJS + clearRequireCache
   assert.notEqual(dynamicImportCJS2, dynamicImportCJS3)
 
   // known limitation: require cache can't be fully cleared

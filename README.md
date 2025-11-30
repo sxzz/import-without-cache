@@ -20,7 +20,7 @@ npm i import-without-cache
 ## Usage
 
 ```ts
-import { clearCJSCache, init, isSupported } from 'import-without-cache'
+import { clearRequireCache, init, isSupported } from 'import-without-cache'
 
 if (!isSupported) {
   throw new Error('import-without-cache is not supported in this environment.')
@@ -30,7 +30,7 @@ const deregister = init()
 
 const mod = await import('some-module', { with: { cache: 'no' } })
 
-clearCJSCache() // Optional: clear CommonJS cache if needed
+clearRequireCache() // Optional: clear CommonJS cache if needed
 
 // or
 const mod2 = await import(`no-cache://some-module`)
@@ -42,8 +42,9 @@ deregister() // Optional: deregister the hooks when no longer needed
 
 ## Known Limitations
 
-- Support Node.js since v22.15.0, and doesn't support Deno or Bun.
-- Only supports ESM modules by default. CommonJS cache can be cleared by `clearCJSCache`.
+- Support Node.js since v22.15.0, and doesn't support Deno.
+  - For Bun, `clearRequireCache` works, but `init` is not needed since ESM imports is the same as CJS requires.
+- Only supports ESM modules by default. CommonJS cache can be cleared by `clearRequireCache`.
 - `require(esm)` is not supported.
 
 ## Sponsors

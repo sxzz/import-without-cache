@@ -10,7 +10,7 @@ export * from './rand.js'
 export const cjs = require('./cjs.cjs')
 
 // require + ESM
-export const requireESM = require('./require-esm.js')
+export const requireESM = require('./require-esm.js').requireESM
 // import + CJS
 export { default as importCJS } from './cjs-import.cjs'
 // dynamic import + CJS

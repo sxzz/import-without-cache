@@ -53,7 +53,7 @@ export function init(): () => void {
   })
 }
 
-export function clearCJSCache(): void {
+export function clearRequireCache(): void {
   for (const key of Object.keys(require.cache)) {
     delete require.cache[key]
   }
