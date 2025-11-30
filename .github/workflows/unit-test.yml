@@ -14,7 +14,7 @@ jobs:
     with:
       skip-test: true
 
-  test:
+  test-nodejs:
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -36,3 +36,24 @@ jobs:
 
       - name: Test
         run: pnpm run test
+
+  test-bun:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+        with:
+          persist-credentials: false
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@735343b667d3e6f658f44d0eca948eb6282f2b76 # v2.0.2
+
+      - name: Install Dependencies
+        run: bun install
+
+      - name: Build
+        run: bun run build
+
+      - name: Test
+        run: bun run test:bun
