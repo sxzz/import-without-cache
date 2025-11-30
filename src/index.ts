@@ -1,4 +1,5 @@
 import module, { type LoadHookContext } from 'node:module'
+import process from 'node:process'
 
 const namespace = 'no-cache://'
 const namespaceLength = namespace.length
@@ -13,6 +14,11 @@ export const isSupported: boolean = !!module.registerHooks
 
 let deregister: (() => void) | undefined
 export function init(): () => void {
+  if (process.versions.bun) {
+    throw new Error(
+      'init is unnecessary in Bun, use clearRequireCache() instead.',
+    )
+  }
   if (!isSupported) {
     throw new Error('import-without-cache requires Node.js v20.19.0 or higher.')
   }
