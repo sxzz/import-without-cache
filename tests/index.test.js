@@ -1,17 +1,8 @@
 // @ts-check
 
 import assert from 'node:assert'
-import { createRequire } from 'node:module'
 import { test } from 'node:test'
-import { init } from '../dist/index.mjs'
-
-const require = createRequire(import.meta.url)
-
-function clearCJSCache() {
-  for (const key of Object.keys(require.cache)) {
-    delete require.cache[key]
-  }
-}
+import { clearCJSCache, init } from '../dist/index.mjs'
 
 test('import attributes', async () => {
   const deregister = init()

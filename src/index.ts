@@ -53,6 +53,12 @@ export function init(): () => void {
   })
 }
 
+export function clearCJSCache(): void {
+  for (const key of Object.keys(require.cache)) {
+    delete require.cache[key]
+  }
+}
+
 function getParentUUID(parentURL: string | undefined) {
   if (!parentURL) return
   return new URL(parentURL).searchParams.get('no-cache') ?? undefined
