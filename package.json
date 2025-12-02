@@ -1,7 +1,7 @@
 {
   "name": "import-without-cache",
   "type": "module",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "packageManager": "pnpm@10.24.0",
   "description": "Import ES modules without cache.",
   "author": "Kevin Deng <sxzz@sxzz.moe>",
