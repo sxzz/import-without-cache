@@ -6,7 +6,7 @@ const namespaceLength = namespace.length
 
 declare global {
   interface ImportAttributes {
-    cache?: 'no'
+    cache: 'no'
   }
 }
 
