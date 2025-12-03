@@ -6,7 +6,8 @@ const namespaceLength = namespace.length
 
 declare global {
   interface ImportAttributes {
-    cache: 'no'
+    // @ts-ignore - tsgo bug
+    cache?: 'no'
   }
 }
 
