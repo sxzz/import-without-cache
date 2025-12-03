@@ -4,13 +4,6 @@ import process from 'node:process'
 const namespace = 'no-cache://'
 const namespaceLength = namespace.length
 
-declare global {
-  interface ImportAttributes {
-    // @ts-ignore - tsgo bug
-    cache?: 'no'
-  }
-}
-
 export const isSupported: boolean = !!module.registerHooks
 
 let deregister: (() => void) | undefined
