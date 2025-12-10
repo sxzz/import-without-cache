@@ -2,7 +2,7 @@
   "name": "import-without-cache",
   "type": "module",
   "version": "0.2.2",
-  "packageManager": "pnpm@10.24.0",
+  "packageManager": "pnpm@10.25.0",
   "description": "Import ES modules without cache.",
   "author": "Kevin Deng <sxzz@sxzz.moe>",
   "license": "MIT",
@@ -46,13 +46,13 @@
   "devDependencies": {
     "@sxzz/eslint-config": "^7.4.1",
     "@sxzz/prettier-config": "^2.2.6",
-    "@types/bun": "^1.3.3",
+    "@types/bun": "^1.3.4",
     "@types/node": "^24.10.1",
-    "@typescript/native-preview": "7.0.0-dev.20251202.1",
+    "@typescript/native-preview": "7.0.0-dev.20251210.1",
     "bumpp": "^10.3.2",
     "eslint": "^9.39.1",
-    "prettier": "^3.7.3",
-    "tsdown": "^0.17.0-beta.5",
+    "prettier": "^3.7.4",
+    "tsdown": "^0.17.2",
     "typescript": "^5.9.3"
   },
   "prettier": "@sxzz/prettier-config"

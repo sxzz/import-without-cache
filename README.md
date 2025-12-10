@@ -46,7 +46,7 @@ deregister() // Optional: deregister the hooks when no longer needed
   - For Bun, `clearRequireCache` works, but `init` is not needed since ESM imports is the same as CJS requires.
   - Yarn PnP is not supported on Node.js < v24.
 - Only supports ESM modules by default. CommonJS cache can be cleared by `clearRequireCache`.
-- `require(esm)` is not supported.
+- `require(esm)` is not supported. Please track [this PR](https://github.com/nodejs/node/pull/60974).
 
 ## Sponsors
 
