@@ -14,7 +14,7 @@ export function init(): () => void {
     )
   }
   if (!isSupported) {
-    throw new Error('import-without-cache requires Node.js v20.19.0 or higher.')
+    throw new Error('import-without-cache requires Node.js v22.15.0 or higher.')
   }
 
   if (deregister) return deregister
