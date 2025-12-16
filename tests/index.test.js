@@ -94,3 +94,15 @@ test('register twice', () => {
   assert.notEqual(deregister1, deregister3)
   deregister3()
 })
+
+test('data URL', async () => {
+  const code = 'export const foo = 42'
+
+  const deregister = init()
+  const { foo } = await import(`data:text/javascript;base64,${btoa(code)}`, {
+    with: { cache: 'no' },
+  })
+  deregister()
+
+  assert.equal(foo, 42)
+})

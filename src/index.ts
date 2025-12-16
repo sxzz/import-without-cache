@@ -21,22 +21,18 @@ export function init(): () => void {
 
   const hooks = module.registerHooks({
     resolve(specifier, context, nextResolve) {
-      const parentUUID = getParentUUID(context.parentURL)
-      const fromNoCache =
-        !module.isBuiltin(specifier) &&
-        (specifier.startsWith(namespace) ||
-          context.importAttributes?.cache === 'no' ||
-          parentUUID)
-
-      if (!fromNoCache) {
-        return nextResolve(specifier, context)
-      }
-
+      let noCache = context.importAttributes?.cache === 'no'
       if (specifier.startsWith(namespace)) {
         specifier = specifier.slice(namespaceLength)
+        noCache = true
       }
 
       const resolved = nextResolve(specifier, context)
+      if (!resolved.url.startsWith('file://')) return resolved
+
+      const parentUUID = getParentUUID(context.parentURL)
+      if (!noCache && !parentUUID) return resolved
+
       resolved.url = appendUUID(resolved.url, parentUUID || crypto.randomUUID())
       return resolved
     },
@@ -51,6 +47,10 @@ export function init(): () => void {
     hooks.deregister()
     deregister = undefined
   })
+}
+
+export function unregister(): void {
+  deregister?.()
 }
 
 export function clearRequireCache(): void {
