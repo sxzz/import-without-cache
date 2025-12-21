@@ -6,8 +6,14 @@ const namespaceLength = namespace.length
 
 export const isSupported: boolean = !!module.registerHooks
 
+export interface Options {
+  skipNodeModules?: boolean
+}
+
+const RE_NODE_MODULES = /[/\\]node_modules[/\\]/
+
 let deregister: (() => void) | undefined
-export function init(): () => void {
+export function init({ skipNodeModules }: Options = {}): () => void {
   if (process.versions.bun) {
     throw new Error(
       'init is unnecessary in Bun, use clearRequireCache() instead.',
@@ -28,6 +34,9 @@ export function init(): () => void {
       }
 
       const resolved = nextResolve(specifier, context)
+      if (skipNodeModules && RE_NODE_MODULES.test(resolved.url)) {
+        return resolved
+      }
       if (!resolved.url.startsWith('file://')) return resolved
 
       const parentUUID = getParentUUID(context.parentURL)

@@ -1,8 +1,14 @@
 // @ts-check
 
 import assert from 'node:assert'
-import { test } from 'node:test'
-import { clearRequireCache, init } from '../dist/index.mjs'
+import { afterEach, test } from 'node:test'
+import { clearRequireCache, init, unregister } from '../dist/index.mjs'
+
+afterEach(() => {
+  unregister()
+})
+
+const RE_NO_CACHE = /\?no-cache=[0-9a-f-]{36}$/
 
 test('import attributes', async () => {
   const deregister = init()
@@ -34,7 +40,7 @@ test('import attributes', async () => {
     }
   )
 
-  assert.match(url, /\?no-cache=[0-9a-f-]{36}$/)
+  assert.match(url, RE_NO_CACHE)
 
   // import + ESM
   assert.notEqual(uuid, uuid2)
@@ -95,14 +101,23 @@ test('register twice', () => {
   deregister3()
 })
 
+test('skip node_modules', () => {
+  const deregister = init({ skipNodeModules: false })
+  assert.match(import.meta.resolve('no-cache://tsdown'), RE_NO_CACHE)
+  deregister()
+
+  const deregister2 = init({ skipNodeModules: true })
+  assert.doesNotMatch(import.meta.resolve('no-cache://tsdown'), RE_NO_CACHE)
+  deregister2()
+})
+
 test('data URL', async () => {
   const code = 'export const foo = 42'
 
-  const deregister = init()
+  init()
   const { foo } = await import(`data:text/javascript;base64,${btoa(code)}`, {
     with: { cache: 'no' },
   })
-  deregister()
 
   assert.equal(foo, 42)
 })

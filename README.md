@@ -26,7 +26,10 @@ if (!isSupported) {
   throw new Error('import-without-cache is not supported in this environment.')
 }
 
-const deregister = init()
+const deregister = init({
+  // Optional
+  skipNodeModules: false,
+})
 
 const mod = await import('some-module', { with: { cache: 'no' } })
 
