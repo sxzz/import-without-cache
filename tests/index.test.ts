@@ -1,6 +1,12 @@
 import assert from 'node:assert'
+import path from 'node:path'
 import { afterEach, test } from 'node:test'
-import { clearRequireCache, init, unregister, loaded } from '../dist/index.mjs'
+import {
+  clearRequireCache,
+  depsStore,
+  init,
+  unregister,
+} from '../dist/index.mjs'
 
 afterEach(() => {
   unregister()
@@ -25,7 +31,6 @@ test('import attributes', async () => {
   } = await import('./fixtures/mod.js', {
     with: { cache: 'no' },
   })
-  assert(loaded.size > 0)
   clearRequireCache()
   const {
     uuid: uuid3,
@@ -122,4 +127,26 @@ test('data URL', async () => {
   })
 
   assert.equal(foo, 42)
+})
+
+test('deps store', async () => {
+  init()
+
+  const depsA = new Set<string>()
+  const depsB = new Set<string>()
+  await Promise.all([
+    depsStore.run(
+      depsA,
+      // @ts-ignore missing types
+      () => import('./fixtures/deps-a.js', { with: { cache: 'no' } }),
+    ),
+    depsStore.run(
+      depsB,
+      // @ts-ignore missing types
+      () => import('./fixtures/deps-b.js', { with: { cache: 'no' } }),
+    ),
+  ])
+
+  assert(depsA.has(path.resolve('./tests/fixtures/deps-a.js')))
+  assert(depsB.has(path.resolve('./tests/fixtures/deps-b.js')))
 })

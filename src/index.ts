@@ -1,3 +1,4 @@
+import { AsyncLocalStorage } from 'node:async_hooks'
 import module, { type LoadHookContext } from 'node:module'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
@@ -13,7 +14,7 @@ export interface Options {
 
 const RE_NODE_MODULES = /[/\\]node_modules[/\\]/
 
-export const loaded: Set<string> = new Set<string>()
+export const depsStore: AsyncLocalStorage<Set<string>> = new AsyncLocalStorage()
 
 let deregister: (() => void) | undefined
 export function init({ skipNodeModules }: Options = {}): () => void {
@@ -45,7 +46,11 @@ export function init({ skipNodeModules }: Options = {}): () => void {
       const parentUUID = getParentUUID(context.parentURL)
       if (!noCache && !parentUUID) return resolved
 
-      loaded.add(fileURLToPath(resolved.url))
+      const deps = depsStore.getStore()
+      if (deps) {
+        deps.add(fileURLToPath(resolved.url))
+      }
+
       resolved.url = appendUUID(resolved.url, parentUUID || crypto.randomUUID())
       return resolved
     },
@@ -58,7 +63,6 @@ export function init({ skipNodeModules }: Options = {}): () => void {
 
   return (deregister = () => {
     hooks.deregister()
-    loaded.clear()
     deregister = undefined
   })
 }
