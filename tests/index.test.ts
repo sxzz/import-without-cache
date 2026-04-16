@@ -1,8 +1,6 @@
-// @ts-check
-
 import assert from 'node:assert'
 import { afterEach, test } from 'node:test'
-import { clearRequireCache, init, unregister } from '../dist/index.mjs'
+import { clearRequireCache, init, unregister, loaded } from '../dist/index.mjs'
 
 afterEach(() => {
   unregister()
@@ -13,6 +11,7 @@ const RE_NO_CACHE = /\?no-cache=[0-9a-f-]{36}$/
 test('import attributes', async () => {
   const deregister = init()
   const { uuid, url, cjs, requireESM, importCJS, dynamicImportCJS } =
+    // @ts-ignore missing types
     await import('./fixtures/mod.js', {
       with: { cache: 'no' },
     })
@@ -22,9 +21,11 @@ test('import attributes', async () => {
     requireESM: requireESM2,
     importCJS: importCJS2,
     dynamicImportCJS: dynamicImportCJS2,
+    // @ts-ignore missing types
   } = await import('./fixtures/mod.js', {
     with: { cache: 'no' },
   })
+  assert(loaded.size > 0)
   clearRequireCache()
   const {
     uuid: uuid3,
@@ -68,6 +69,7 @@ test('import attributes', async () => {
   deregister()
 
   await assert.rejects(
+    // @ts-ignore missing types
     () => import('./fixtures/mod.js', { with: { cache: 'no' } }),
   )
 })

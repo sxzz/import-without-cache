@@ -12,6 +12,8 @@ export interface Options {
 
 const RE_NODE_MODULES = /[/\\]node_modules[/\\]/
 
+export const loaded: Set<string> = new Set<string>()
+
 let deregister: (() => void) | undefined
 export function init({ skipNodeModules }: Options = {}): () => void {
   if (process.versions.bun) {
@@ -42,6 +44,7 @@ export function init({ skipNodeModules }: Options = {}): () => void {
       const parentUUID = getParentUUID(context.parentURL)
       if (!noCache && !parentUUID) return resolved
 
+      loaded.add(resolved.url)
       resolved.url = appendUUID(resolved.url, parentUUID || crypto.randomUUID())
       return resolved
     },
@@ -54,6 +57,7 @@ export function init({ skipNodeModules }: Options = {}): () => void {
 
   return (deregister = () => {
     hooks.deregister()
+    loaded.clear()
     deregister = undefined
   })
 }

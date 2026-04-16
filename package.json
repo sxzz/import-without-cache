@@ -33,7 +33,7 @@
     "lint:fix": "pnpm run lint --fix",
     "build": "tsdown",
     "dev": "tsdown --watch",
-    "test": "node --test tests/index.test.js",
+    "test": "node --test tests/index.test.ts",
     "test:bun": "bun test tests/bun.test.ts",
     "typecheck": "tsgo --noEmit",
     "format": "prettier --cache --write .",
