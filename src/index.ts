@@ -1,5 +1,6 @@
 import module, { type LoadHookContext } from 'node:module'
 import process from 'node:process'
+import { fileURLToPath } from 'node:url'
 
 const namespace = 'no-cache://'
 const namespaceLength = namespace.length
@@ -44,7 +45,7 @@ export function init({ skipNodeModules }: Options = {}): () => void {
       const parentUUID = getParentUUID(context.parentURL)
       if (!noCache && !parentUUID) return resolved
 
-      loaded.add(resolved.url)
+      loaded.add(fileURLToPath(resolved.url))
       resolved.url = appendUUID(resolved.url, parentUUID || crypto.randomUUID())
       return resolved
     },
