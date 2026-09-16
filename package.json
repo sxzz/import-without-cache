@@ -1,7 +1,7 @@
 {
   "name": "import-without-cache",
   "type": "module",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Import ES modules without cache.",
   "author": "Kevin Deng <sxzz@sxzz.moe>",
   "license": "MIT",
