@@ -85,7 +85,7 @@ function getParentUUID(parentURL: string | undefined) {
 function appendUUID(url: string, uuid: string): string {
   const parsed = new URL(url)
   parsed.searchParams.set('no-cache', uuid)
-  return parsed.toString()
+  return parsed.href
 }
 
 function cleanupImportAttributes(context: LoadHookContext): void {
